@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace TripSharing.Controllers
+namespace TripSharing.Controllers 
 {
     [ApiController]
     [Route("[controller]")]
