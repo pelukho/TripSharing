@@ -31,6 +31,16 @@ namespace TripSharing
             {
                 options.UseMySQL(_config.GetConnectionString("DefaultConnection"));
             });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins(_config.GetValue<string>("Origins"));
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +64,8 @@ namespace TripSharing
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+            
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {
