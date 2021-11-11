@@ -25,7 +25,7 @@ namespace TripSharing
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "client-app/build"; });
             services.AddSwaggerGen();
             services.AddDbContext<DataContext>(options =>
             {
@@ -64,7 +64,7 @@ namespace TripSharing
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = "client-app";
 
                 if (env.IsDevelopment())
                 {
