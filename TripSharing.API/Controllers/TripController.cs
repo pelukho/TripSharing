@@ -1,33 +1,30 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using TripSharing.Application.Trips;
 using TripSharing.Domain;
-using TripSharing.Repository;
 
 namespace TripSharing.Controllers
 {
     public class TripController : BaseApiController
     {
-        private readonly DataContext _context;
-
-        public TripController(DataContext context)
-        {
-            _context = context;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<Trip>>> GetTrips()
         {
-            return await _context.Trips.ToListAsync();
+            return await Mediator.Send(new List.Query());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Trip>> GetTrip(Guid id)
         {
-            return await _context.Trips.FindAsync(id);
+            return await Mediator.Send(new Details.Query{Id = id});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTrip(Trip trip)
+        {
+            return Ok(await Mediator.Send(new Create.Command {Trip = trip}));
         }
     }
 }

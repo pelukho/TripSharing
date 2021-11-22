@@ -12,6 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MediatR" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.11" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
           <PrivateAssets>all</PrivateAssets>
@@ -28,6 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\TripSharing.Application\TripSharing.Application.csproj" />
       <ProjectReference Include="..\TripSharing.Repository\TripSharing.Repository.csproj" />
     </ItemGroup>
 
