@@ -7,7 +7,7 @@ using TripSharing.Domain;
 
 namespace TripSharing.Controllers
 {
-    public class TripController : BaseApiController
+    public class TripsController : BaseApiController
     {
         [HttpGet]
         public async Task<ActionResult<List<Trip>>> GetTrips()
