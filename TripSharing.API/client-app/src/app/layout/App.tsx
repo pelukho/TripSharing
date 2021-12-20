@@ -1,93 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { Trip } from "../models/Trip";
+import React, { useEffect } from 'react';
 import Navigation from "./Navigation";
 import TripDashboard from "../../features/trips/dashboard/TripDashboard";
 import {Container} from "semantic-ui-react";
-import {v4 as uuid} from 'uuid';
-import apiService from '../api/apiService';
 import LoadingComponent from '../layout/LoadingComponent';
+import {observer} from "mobx-react-lite";
+import useStore from "../stores/store";
 
 function App() {
-  const [trips, setTrips] = useState<Trip[]>([]),
-      [selectedTrip, setSelectedTrip] = useState<Trip | undefined>(undefined),
-      [editMode, setEditMode] = useState(false),
-      [loading, setLoading] = useState(true),
-      [submitting, setSubmitting] = useState(false);
-  
-  function handleSelectedTrip(id: string) {
-      setSelectedTrip(trips.find(x => x.id === id));
-  }
-  
-  function handleCancelSelectedTrip() {
-      setSelectedTrip(undefined);
-  }
-  
-  function handleFormOpen(id: string) {
-      id ? handleSelectedTrip(id) : handleCancelSelectedTrip();
-      setEditMode(true);
-  }
-  
-  function handleFormClose(){
-      setEditMode(false);
-  }
-  
-  function handleCreateOrUpdateTrip(trip: Trip) {
-      setSubmitting(true);
-      
-      if (trip.id) {
-          apiService.Trips.update(trip).then(() => {
-              setTrips([...trips.filter(t => t.id !== trip.id), trip]);
-              setEditMode(false);
-              setSubmitting(false)
-              setSelectedTrip(trip);
-          });
-      } else {
-          trip.id = uuid();
-          apiService.Trips.create(trip).then(() => {
-              setTrips([...trips, trip]);
-              setEditMode(false);
-              setSubmitting(false)
-              setSelectedTrip(trip); 
-          });
-      }
-  }
-  
-  function handleDeleteTrip(id: string) {
-      setSubmitting(true);
-      apiService.Trips.delete(id).then(() => {
-          setTrips([...trips.filter(t => t.id !== id)]);
-          setSubmitting(false);
-      });      
-  }
+  const {tripStore} = useStore();
   
   useEffect(() => {
-      apiService.Trips.list().then(response => {
-          setTrips(response);
-          setLoading(false);
-        });
-  }, []);
+      tripStore.loadTrips();
+  }, [tripStore]);
   
-  if(loading) return <LoadingComponent content='Loading application' />
+  if(tripStore.loadingInitial) return <LoadingComponent content='Loading application' />
   
   return (
     <div className="App">
-      <Navigation openForm={handleFormOpen} />
+      <Navigation />
         <Container style={{marginTop: '100px'}}>
-            <TripDashboard 
-                trips={trips}
-                trip={selectedTrip}
-                selectTrip={handleSelectedTrip}
-                cancelSelectedTrip={handleCancelSelectedTrip}
-                editMode={editMode}
-                submitting={submitting}
-                openForm={handleFormOpen}
-                closeForm={handleFormClose}
-                createOrUpdate={handleCreateOrUpdateTrip}
-                deleteTrip={handleDeleteTrip}
-            />
+            <TripDashboard />
         </Container>
     </div>
   );
 }
 
-export default App;
+export default observer(App);

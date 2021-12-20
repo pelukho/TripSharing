@@ -1,24 +1,20 @@
 import React, {SyntheticEvent, useState} from "react";
-import {Trip} from "../../../app/models/Trip";
 import {Button, Item, ItemGroup, Label, Segment} from "semantic-ui-react";
+import useStore from "../../../app/stores/store";
+import {observer} from "mobx-react-lite";
 
-interface Props {
-    trips: Trip[],
-    selectTrip: (id: string) => void,
-    deleteTrip: (id: string) => void,
-    submitting: boolean
-}
-export default function TripList({trips, selectTrip, deleteTrip, submitting} : Props) {
-    const [target, setTarget] = useState('');
+export default observer(function TripList() {
+    const [target, setTarget] = useState(''),
+        {tripStore} = useStore();
     
     function handleTripDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
         setTarget(e.currentTarget.name);
-        deleteTrip(id);
+        tripStore.deleteTrip(id);
     }
     return(
         <Segment>
             <ItemGroup divided>
-                {trips?.map(trip => (
+                {tripStore.tripsByDate?.map(trip => (
                     <Item key={trip.id}>
                         <Item.Content>
                             <Item.Header as='a'>{trip.id}</Item.Header>
@@ -33,13 +29,13 @@ export default function TripList({trips, selectTrip, deleteTrip, submitting} : P
                                     content='Delete Trip'
                                     color='red'
                                     onClick={e => handleTripDelete(e, trip.id)}
-                                    loading={submitting && target === trip.id}
+                                    loading={tripStore.submitting && target === trip.id}
                                 />
                                 <Button 
                                     floated='right' 
                                     content='View Trip' 
                                     color='blue'
-                                    onClick={() => selectTrip(trip.id)}
+                                    onClick={() => tripStore.setSelectedTrip(trip)}
                                 />
                                 <Label basic content={trip.status ? 'Done' : 'Not done'}/>
                             </Item.Extra>
@@ -49,4 +45,4 @@ export default function TripList({trips, selectTrip, deleteTrip, submitting} : P
             </ItemGroup>
         </Segment>
     );
-}
+});

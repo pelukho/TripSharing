@@ -1,30 +1,31 @@
 import React from "react";
 import {Button, ButtonGroup, Card, Image} from "semantic-ui-react";
-import {Trip} from "../../../app/models/Trip";
+import useStore from "../../../app/stores/store";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
-interface Props {
-    trip: Trip,
-    cancelSelectedTrip: () => void,
-    openForm: (id: string) => void
-}
-
-export default function TripDetails({trip, cancelSelectedTrip, openForm}: Props){
+export default function TripDetails(){
+    const {tripStore} = useStore();
+    
+    if(!tripStore.selectedTrip) {
+        return <LoadingComponent/>;
+    }
+    
     return(
         <Card fluid>
             <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
             <Card.Content>
-                <Card.Header>{trip.id}</Card.Header>
+                <Card.Header>{tripStore.selectedTrip.id}</Card.Header>
                 <Card.Meta>
-                    <span className='date'>{trip.date}</span>
+                    <span className='date'>{tripStore.selectedTrip.date}</span>
                 </Card.Meta>
                 <Card.Description>
-                    {trip.status ? 'Success' : 'Not success'}
+                    {tripStore.selectedTrip.status ? 'Success' : 'Not success'}
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
                 <ButtonGroup widths='2'>
-                    <Button basic color='blue' content='Edit' onClick={() => openForm(trip.id)}/>
-                    <Button basic color='grey' content='Cancel' onClick={cancelSelectedTrip}/>
+                    <Button basic color='blue' content='Edit' onClick={() => tripStore.openForm(tripStore.selectedTrip?.id)}/>
+                    <Button basic color='grey' content='Cancel' onClick={tripStore.cancelSelectedTrip}/>
                 </ButtonGroup>
             </Card.Content>
         </Card>

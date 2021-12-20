@@ -1,16 +1,12 @@
 import React, {ChangeEvent, useState} from "react";
 import {Button, Form, Segment} from "semantic-ui-react";
-import {Trip} from "../../../app/models/Trip";
+import useStore from "../../../app/stores/store";
+import {observer} from "mobx-react-lite";
 
-interface Props {
-    selectedTrip: Trip | undefined,
-    closeForm: () => void,
-    createOrUpdate: (trip: Trip) => void,
-    submitting: boolean,
-}
-
-export default function TripForm({closeForm, selectedTrip, createOrUpdate, submitting} : Props) {
-    const initialState = selectedTrip ?? {
+export default observer(function TripForm() {
+    
+    const {tripStore} = useStore(),
+        initialState = tripStore.selectedTrip ?? {
         id: '',
         date: '',
         status: false,
@@ -19,7 +15,7 @@ export default function TripForm({closeForm, selectedTrip, createOrUpdate, submi
     const [trip, setTrip] = useState(initialState);
     
     function handleSubmit(){
-        createOrUpdate(trip);
+        trip.id ? tripStore.updateTrip(trip) : tripStore.createTrip(trip);
         console.log(trip);
     }
     
@@ -42,9 +38,9 @@ export default function TripForm({closeForm, selectedTrip, createOrUpdate, submi
             <Form onSubmit={handleSubmit} autoComplete='off'>
                 <Form.Input placeholder='Some text' name='date1' value={trip.date} onChange={handleInputChange} />
                 <Form.Input type='date' value={getFormatedDate(trip.date)} name='date' onChange={handleInputChange} />
-                <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
-                <Button floated='right' type='button' content='Cancel' onClick={closeForm}/>
+                <Button loading={tripStore.submitting} floated='right' positive type='submit' content='Submit' />
+                <Button floated='right' type='button' content='Cancel' onClick={tripStore.closeForm}/>
             </Form>
         </Segment>
     );
-}
+})
