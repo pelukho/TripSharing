@@ -1,7 +1,6 @@
 import {makeAutoObservable, runInAction} from "mobx";
 import {Trip} from "../models/Trip";
 import apiService from "../api/apiService";
-import {v4 as uuid} from 'uuid';
 
 export default class TripStore {
     tripRepository = new Map<string, Trip>();
@@ -21,16 +20,52 @@ export default class TripStore {
             .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
     }
     
+    get getGroupedTrips() {
+        return Object.entries(
+            this.tripsByDate.reduce((trips, trip) => {
+                const date = trip.date;
+                trips[date] = trips[date] ? [...trips[date], trip] : [trip];
+                
+                return trips;
+            }, {} as {[key: string]: Trip[]})
+        );
+    }
+    
     loadTrips = async () => {        
+        this.loadingInitial = true;
         try {
             const tripList = await apiService.Trips.list();
-            tripList.forEach(trip => {
-                this.tripRepository.set(trip.id, trip);
+            runInAction(() => {
+                tripList.forEach(trip => {
+                    this.tripRepository.set(trip.id, trip);
+                });
             });
             this.setInitialLoading(false);
         } catch(e) {
             console.log(e);
             this.setInitialLoading(false);
+        }
+    };
+    
+    loadTrip = async (id: string) => {
+        let trip = this.tripRepository.get(id);
+        if(trip) {
+            this.selectedTrip = trip;
+            return trip;
+        } else {
+            this.loadingInitial = true;
+            try {
+                trip = await apiService.Trips.details(id);
+                this.tripRepository.set(id, trip);
+                runInAction(() => {
+                    this.selectedTrip = trip;
+                });
+                this.setInitialLoading(false);
+                return trip;
+            } catch (e) {
+                console.log(e);
+                this.setInitialLoading(false);
+            }
         }
     };
     
@@ -46,10 +81,6 @@ export default class TripStore {
         this.selectedTrip = this.tripRepository.get(id);
     };
     
-    cancelSelectedTrip = () => {
-        this.selectedTrip = undefined;
-    };
-    
     setEditMode = (state: boolean) => {
         this.editMode = state;
     }
@@ -58,19 +89,8 @@ export default class TripStore {
         this.submitting = state;
     };
     
-    openForm = (id?: string ) => {
-        id ? this.getSelectedTrip(id) : this.cancelSelectedTrip();
-        this.editMode = true;
-    };
-    
-    closeForm = () => {
-        this.editMode = false;
-    };
-    
     createTrip = async (trip: Trip) => {
-        this.loading = true;
-        trip.id = uuid();
-        
+        this.loading = true;        
         try {
             await apiService.Trips.create(trip);
             runInAction(() => {
@@ -113,9 +133,6 @@ export default class TripStore {
             runInAction(() => {
                 this.tripRepository.delete(id);
                 this.loading = false;
-                if(this.selectedTrip?.id === id) {
-                    this.cancelSelectedTrip();
-                }
             });
         } catch(e) {
             console.log(e);

@@ -1,22 +1,37 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {Button, Form, Segment} from "semantic-ui-react";
 import useStore from "../../../app/stores/store";
 import {observer} from "mobx-react-lite";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {v4 as uuid} from 'uuid';
 
 export default observer(function TripForm() {
     
     const {tripStore} = useStore(),
-        initialState = tripStore.selectedTrip ?? {
-        id: '',
-        date: '',
-        status: false,
-    };
+        navigate = useNavigate(),
+        {id} = useParams<{id: string}>(),
+        [trip, setTrip] = useState({
+             id: '',
+             date: '',
+             status: false,
+        });
     
-    const [trip, setTrip] = useState(initialState);
+    useEffect(() => {
+        if(id) {
+            tripStore.loadTrip(id).then(trip => setTrip(trip!));
+        }
+    }, [id, tripStore]);
     
     function handleSubmit(){
-        trip.id ? tripStore.updateTrip(trip) : tripStore.createTrip(trip);
-        console.log(trip);
+        if(trip.id.length === 0) {
+            let newTrip = {
+                ...trip,
+                id: uuid()
+            };
+            tripStore.createTrip(newTrip).then(() => navigate(`/trips/${newTrip.id}`));
+        } else {
+            tripStore.updateTrip(trip).then(() => navigate(`/trips/${trip.id}`));
+        }
     }
     
     function handleInputChange(event: ChangeEvent<HTMLInputElement>){
@@ -39,7 +54,7 @@ export default observer(function TripForm() {
                 <Form.Input placeholder='Some text' name='date1' value={trip.date} onChange={handleInputChange} />
                 <Form.Input type='date' value={getFormatedDate(trip.date)} name='date' onChange={handleInputChange} />
                 <Button loading={tripStore.submitting} floated='right' positive type='submit' content='Submit' />
-                <Button floated='right' type='button' content='Cancel' onClick={tripStore.closeForm}/>
+                <Button as={Link} to={`/trips/${trip.id}`} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     );

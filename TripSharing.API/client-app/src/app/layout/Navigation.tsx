@@ -1,19 +1,18 @@
 import React from "react";
 import {Button, Container, Menu} from 'semantic-ui-react';
-import useStore from "../stores/store";
+import {NavLink} from "react-router-dom";
 
 export default function Navigation(){
-    const {tripStore} = useStore();
     
     return(
         <Menu inverted fixed='top'>
                <Container>
-                   <Menu.Item header>
+                   <Menu.Item as={NavLink} to='/' header>
                        Logo
                    </Menu.Item>
-                   <Menu.Item name="Trips"/>
+                   <Menu.Item as={NavLink} to='/trips' name="Trips"/>
                    <Menu.Item>
-                       <Button positive content="Create Trip" onClick={() => tripStore.openForm()} />
+                       <Button positive content="Create Trip" as={NavLink} to='/createTrip' />
                    </Menu.Item>
                </Container>
         </Menu>
