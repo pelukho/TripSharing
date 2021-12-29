@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,7 +11,7 @@ namespace TripSharing
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
 
@@ -25,7 +22,9 @@ namespace TripSharing
             try
             {
                 var context = services.GetRequiredService<DataContext>();
-                context.Database.Migrate();
+                await context.Database.MigrateAsync();
+
+                await Seed.SeedData(context);
             }
             catch (Exception e)
             {
@@ -33,7 +32,7 @@ namespace TripSharing
                 logger.LogError(e, "An error occured while migrating");
             }
             
-            host.Run();
+            await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
