@@ -16,9 +16,9 @@ namespace TripSharing.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Trip>> GetTrip(Guid id)
+        public async Task<IActionResult> GetTrip(Guid id)
         {
-            return await Mediator.Send(new Details.Query{Id = id});
+            return HandleResult(await Mediator.Send(new Details.Query{Id = id}));
         }
 
         [HttpPost]

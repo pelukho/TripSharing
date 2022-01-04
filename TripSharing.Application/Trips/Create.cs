@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
 using TripSharing.Domain;
 using TripSharing.Repository;
@@ -12,7 +13,15 @@ namespace TripSharing.Application.Trips
         {
             public Trip Trip { get; set; }
         }
-        
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Trip).SetValidator(new TripValidator());
+            }
+        }
+
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;

@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Org.BouncyCastle.Asn1.Ocsp;
 using TripSharing.Domain;
@@ -13,6 +14,14 @@ namespace TripSharing.Application.Trips
         public class Command : IRequest
         {
             public Trip Trip { get; set; }
+        }
+        
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Trip).SetValidator(new TripValidator());
+            }
         }
         
         public class Handler : IRequestHandler<Command>
