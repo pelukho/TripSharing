@@ -1,13 +1,11 @@
 import React from 'react';
-import Navigation from "./Navigation";
 import TripDashboard from "../../features/trips/dashboard/TripDashboard";
-import {Container} from "semantic-ui-react";
 import {observer} from "mobx-react-lite";
 import {Routes, Route, useLocation} from "react-router-dom"
 import HomePage from "../../features/pages/HomePage";
 import TripForm from "../../features/trips/form/TripForm";
 import TripDetails from "../../features/trips/details/TripDetails";
-import Layout from "..//layout/Layout";
+import Layout from "../layout/Layout";
 
 function App() {
     const location = useLocation();

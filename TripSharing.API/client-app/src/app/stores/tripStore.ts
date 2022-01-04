@@ -37,6 +37,7 @@ export default class TripStore {
             const tripList = await apiService.Trips.list();
             runInAction(() => {
                 tripList.forEach(trip => {
+                    trip.date = trip.date.split('T')[0];
                     this.tripRepository.set(trip.id, trip);
                 });
             });
@@ -73,21 +74,9 @@ export default class TripStore {
         this.loadingInitial = state;
     }
     
-    setSelectedTrip = (trip: Trip) => {
-        this.selectedTrip = trip;
-    };
-    
-    getSelectedTrip = (id: string) => {
-        this.selectedTrip = this.tripRepository.get(id);
-    };
-    
     setEditMode = (state: boolean) => {
         this.editMode = state;
     }
-    
-    setSubmitting = (state: boolean) => {
-        this.submitting = state;
-    };
     
     createTrip = async (trip: Trip) => {
         this.loading = true;        

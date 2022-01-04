@@ -17,7 +17,7 @@ export default observer(function TripList() {
                     </Header>
                     <Segment>
                         <ItemGroup divided>
-                            {tripStore.tripsByDate?.map(trip => (
+                            {trips.map(trip => (
                                 <TripListItem key={trip.id} trip={trip} />
                             ))}
                         </ItemGroup>

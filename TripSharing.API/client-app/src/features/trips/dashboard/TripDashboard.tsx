@@ -1,9 +1,10 @@
 import React, {useEffect} from "react";
-import {Grid, Message} from "semantic-ui-react";
+import {Grid} from "semantic-ui-react";
 import TripList from "./TripList";
 import useStore from "../../../app/stores/store";
 import {observer} from "mobx-react-lite";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
+import TripFilters from "./TripFilters";
 
 
 export default observer(function TripDashboard() {
@@ -25,11 +26,7 @@ export default observer(function TripDashboard() {
                 <TripList />
             </Grid.Column>
             <Grid.Column width='6'>
-                <Message>
-                    <Message.Header>
-                        Filter
-                    </Message.Header>
-                </Message>
+                <TripFilters />
             </Grid.Column>
         </Grid>
     );
