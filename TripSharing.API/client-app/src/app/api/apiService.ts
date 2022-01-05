@@ -1,7 +1,36 @@
-import axios, {AxiosResponse} from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
 import { Trip } from '../models/Trip';
+import {toast} from "react-toastify";
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
+
+const sleep = (delay: number) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, delay);
+    });
+};
+
+axios.interceptors.response.use(async response => {
+    await sleep(1000);
+    return response;
+}, (error: AxiosError) => {
+    const {data, status} = error.response!;
+    
+    switch (status) {
+        case 400:
+            toast.error('bad request')
+            break;
+        case 401:
+            toast.error('unauthorized')
+            break;
+        case 404:
+            toast.error('not found')
+            break;
+        case 500:
+            toast.error('server error')
+            break;
+    }
+})
 
 const responseBody = <T> (response: AxiosResponse<T>) => response.data,
     requests = {

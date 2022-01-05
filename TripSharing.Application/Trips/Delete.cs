@@ -2,18 +2,19 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using TripSharing.Application.Core;
 using TripSharing.Repository;
 
 namespace TripSharing.Application.Trips
 {
     public class Delete
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public Guid Id { get; set; }
         }
         
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
 
@@ -22,15 +23,22 @@ namespace TripSharing.Application.Trips
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var trip = await _context.Trips.FindAsync(request.Id);
-                
+
+                if (trip == null)
+                {
+                    return null;
+                }
+
                 _context.Remove(trip);
 
-                await _context.SaveChangesAsync();
-                
-                return Unit.Value;
+                var result = await _context.SaveChangesAsync() > 0;
+
+                return !result 
+                    ? Result<Unit>.Failure("Failed to delete the trip") 
+                    : Result<Unit>.Success(Unit.Value);
             }
         }
     }

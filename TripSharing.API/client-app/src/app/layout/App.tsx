@@ -6,11 +6,14 @@ import HomePage from "../../features/pages/HomePage";
 import TripForm from "../../features/trips/form/TripForm";
 import TripDetails from "../../features/trips/details/TripDetails";
 import Layout from "../layout/Layout";
+import {ToastContainer} from "react-toastify";
+import NotFound from "../../features/errors/NotFound";
 
 function App() {
     const location = useLocation();
   return (
     <div className="App"> 
+        <ToastContainer position={'bottom-right'} hideProgressBar />
         <Routes>
             <Route path="/" element={<HomePage/>} />
             <Route element={<Layout/>}>
@@ -20,6 +23,7 @@ function App() {
                 {/* Fix problem with creating new trip while editing old */}
                 <Route key={location.key} path="/createTrip" element={<TripForm/>} />
                 <Route key={location.key} path="/editTrip/:id" element={<TripForm/>} />
+                <Route path={'*'} element={<NotFound/>} />
             </Route>
         </Routes>
     </div>

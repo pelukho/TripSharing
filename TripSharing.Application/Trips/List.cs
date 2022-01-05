@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TripSharing.Application.Core;
 using TripSharing.Domain;
 using TripSharing.Repository;
 
@@ -10,11 +11,11 @@ namespace TripSharing.Application.Trips
 {
     public class List
     {
-        public class Query : IRequest<List<Trip>>
+        public class Query : IRequest<Result<List<Trip>>>
         {
         }
         
-        public class Handler : IRequestHandler<Query, List<Trip>>
+        public class Handler : IRequestHandler<Query, Result<List<Trip>>>
         {
             private readonly DataContext _context;
 
@@ -23,9 +24,9 @@ namespace TripSharing.Application.Trips
                 _context = context;
             }
 
-            public async Task<List<Trip>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<Trip>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Trips.ToListAsync();
+                return Result<List<Trip>>.Success(await _context.Trips.ToListAsync(cancellationToken));
             }
         }
     }

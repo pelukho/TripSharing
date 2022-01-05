@@ -10,9 +10,9 @@ namespace TripSharing.Controllers
     public class TripsController : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<Trip>>> GetTrips()
+        public async Task<IActionResult> GetTrips()
         {
-            return await Mediator.Send(new List.Query());
+            return HandleResult(await Mediator.Send(new List.Query()));
         }
 
         [HttpGet("{id}")]
@@ -24,20 +24,20 @@ namespace TripSharing.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTrip(Trip trip)
         {
-            return Ok(await Mediator.Send(new Create.Command {Trip = trip}));
+            return HandleResult(await Mediator.Send(new Create.Command {Trip = trip}));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditTrip(Guid id, Trip trip)
         {
             trip.Id = id;
-            return Ok(await Mediator.Send(new Edit.Command {Trip = trip}));
+            return HandleResult(await Mediator.Send(new Edit.Command {Trip = trip}));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrip(Guid id)
         {
-            return Ok(await Mediator.Send(new Delete.Command {Id = id}));
+            return HandleResult(await Mediator.Send(new Delete.Command {Id = id}));
         }
     }
 }
