@@ -3,6 +3,7 @@ import {Trip} from "../../../app/models/Trip";
 import {Button, Item, Label, Segment} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import useStore from "../../../app/stores/store";
+import {format} from "date-fns";
 
 interface Props {
     trip: Trip
@@ -25,7 +26,7 @@ export default function TripListItem({trip} : Props) {
                     </Item>
                     <Item.Content>
                         <Item.Header as={Link} to={`/trips/${trip.id}`}>{trip.id}</Item.Header>
-                        <Item.Meta>{trip.date}</Item.Meta>
+                        <Item.Meta>{format(trip.date!, 'dd MMMM yyyy HH:mm')}</Item.Meta>
                         <Item.Description>
                             <div>Lorem {trip.status}</div>
                         </Item.Description>

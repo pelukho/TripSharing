@@ -1,20 +1,29 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
-import {Button, Form, Segment} from "semantic-ui-react";
+import React, {useEffect, useState} from "react";
+import {Button, FormField, Label, Segment} from "semantic-ui-react";
 import useStore from "../../../app/stores/store";
 import {observer} from "mobx-react-lite";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {v4 as uuid} from 'uuid';
+import {Formik, Form, ErrorMessage} from "formik";
+import * as Yup from 'yup';
+import DatePicker from "../../../app/common/form/DatePicker";
+import {Trip} from "../../../app/models/Trip";
 
 export default observer(function TripForm() {
     
     const {tripStore} = useStore(),
         navigate = useNavigate(),
         {id} = useParams<{id: string}>(),
-        [trip, setTrip] = useState({
+        [trip, setTrip] = useState<Trip>
+        ({
              id: '',
-             date: '',
+             date: null,
              status: false,
         });
+    
+    const validationSchema = Yup.object({
+        date: Yup.date().required('The date is required!').nullable()
+    });
     
     useEffect(() => {
         if(id) {
@@ -22,7 +31,7 @@ export default observer(function TripForm() {
         }
     }, [id, tripStore]);
     
-    function handleSubmit(){
+    function handleFormSubmit(trip: Trip){
         if(trip.id.length === 0) {
             let newTrip = {
                 ...trip,
@@ -34,28 +43,38 @@ export default observer(function TripForm() {
         }
     }
     
-    function handleInputChange(event: ChangeEvent<HTMLInputElement>){
-        const {name, value} = event.target;
-        setTrip({...trip, [name]: value});
-    }
-    
-    function getFormatedDate(date: string) : string {
-        let dateToChange = new Date(date),
-            year = dateToChange.getFullYear(),
-            month = (dateToChange.getMonth() + 1) < 10 ? '0' + (dateToChange.getMonth() + 1) : (dateToChange.getMonth() + 1),
-            day = dateToChange.getDate() < 10 ? '0' + dateToChange.getDate() : dateToChange.getDate();
-        
-        return `${year}-${month}-${day}`;
-    }
-    
     return(
         <Segment clearing>
-            <Form onSubmit={handleSubmit} autoComplete='off'>
-                <Form.Input placeholder='Some text' name='date1' value={trip.date} onChange={handleInputChange} />
-                <Form.Input type='date' value={getFormatedDate(trip.date)} name='date' onChange={handleInputChange} />
-                <Button loading={tripStore.submitting} floated='right' positive type='submit' content='Submit' />
-                <Button as={Link} to={`/trips/${trip.id}`} floated='right' type='button' content='Cancel' />
-            </Form>
+            <Formik 
+                validationSchema={validationSchema}
+                enableReinitialize 
+                initialValues={trip} 
+                onSubmit={values => handleFormSubmit(values)}>
+                {({handleSubmit, isValid, isSubmitting, dirty}) => (
+                    <Form className={'ui form'} onSubmit={handleSubmit} autoComplete='off'>
+                        <FormField>
+                            <DatePicker 
+                                placeholderText={'Date'}
+                                name='date'
+                                showTimeSelect
+                                timeCaption={'Time'}
+                                timeFormat={'HH:mm'}
+                                dateFormat="d MMMM, yyyy HH:mm"
+                            />
+                            <ErrorMessage name={'date'} render={error => <Label basic color={'red'} content={error} /> }/>
+                        </FormField>
+                        <Button 
+                            disabled={isSubmitting || !dirty || !isValid}
+                            loading={tripStore.submitting} 
+                            floated='right' 
+                            positive 
+                            type='submit' 
+                            content='Submit' 
+                        />
+                        <Button as={Link} to={`/trips/${trip.id}`} floated='right' type='button' content='Cancel' />
+                    </Form>
+                )}
+            </Formik>
         </Segment>
     );
 })

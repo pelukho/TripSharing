@@ -1,5 +1,5 @@
 export interface Trip {
     id: string
-    date: string
+    date: Date | null
     status: boolean
 }

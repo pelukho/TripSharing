@@ -1,6 +1,7 @@
 import {makeAutoObservable, runInAction} from "mobx";
 import {Trip} from "../models/Trip";
 import apiService from "../api/apiService";
+import {format} from "date-fns";
 
 export default class TripStore {
     tripRepository = new Map<string, Trip>();
@@ -17,13 +18,13 @@ export default class TripStore {
     get tripsByDate () {
         return Array
             .from(this.tripRepository.values())
-            .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+            .sort((a, b) => a.date!.getTime() - b.date!.getTime())
     }
     
     get getGroupedTrips() {
         return Object.entries(
             this.tripsByDate.reduce((trips, trip) => {
-                const date = trip.date;
+                const date = format(trip.date!, 'dd MMM yyyy');
                 trips[date] = trips[date] ? [...trips[date], trip] : [trip];
                 
                 return trips;
@@ -37,8 +38,7 @@ export default class TripStore {
             const tripList = await apiService.Trips.list();
             runInAction(() => {
                 tripList.forEach(trip => {
-                    trip.date = trip.date.split('T')[0];
-                    this.tripRepository.set(trip.id, trip);
+                    this.setTrip(trip);
                 });
             });
             this.setInitialLoading(false);
@@ -57,7 +57,7 @@ export default class TripStore {
             this.loadingInitial = true;
             try {
                 trip = await apiService.Trips.details(id);
-                this.tripRepository.set(id, trip);
+               this.setTrip(trip);
                 runInAction(() => {
                     this.selectedTrip = trip;
                 });
@@ -78,12 +78,17 @@ export default class TripStore {
         this.editMode = state;
     }
     
+    setTrip = (trip: Trip) => {
+        trip.date = new Date(trip.date!);
+        this.tripRepository.set(trip.id, trip);
+    }
+    
     createTrip = async (trip: Trip) => {
         this.loading = true;        
         try {
             await apiService.Trips.create(trip);
             runInAction(() => {
-                this.tripRepository.set(trip.id, trip);
+                this.setTrip(trip);
                 this.selectedTrip = trip;
                 this.setEditMode(false);
                 this.loading = false;
@@ -102,7 +107,7 @@ export default class TripStore {
         try {
             await apiService.Trips.update(trip);
             runInAction(() => {
-                this.tripRepository.set(trip.id, trip);
+                this.setTrip(trip);
                 this.selectedTrip = trip;
                 this.editMode = false;
                 this.loading = false;

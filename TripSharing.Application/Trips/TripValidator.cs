@@ -7,7 +7,7 @@ namespace TripSharing.Application.Trips
     {
         public TripValidator()
         {
-            RuleFor(x => x.Status).NotEmpty();
+            //RuleFor(x => x.Status).NotEmpty();
         }
     }
 }
