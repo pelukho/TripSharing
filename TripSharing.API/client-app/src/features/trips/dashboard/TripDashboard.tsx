@@ -18,7 +18,7 @@ export default observer(function TripDashboard() {
     }, [tripRepository.size, loadTrips]);
 
     if(tripStore.loadingInitial) 
-        return <LoadingComponent content='Loading application' />;
+        return <LoadingComponent content='Loading trips' />;
     
     return(
         <Grid>

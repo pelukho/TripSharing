@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import TripDashboard from "../../features/trips/dashboard/TripDashboard";
 import {observer} from "mobx-react-lite";
 import {Routes, Route, useLocation} from "react-router-dom"
@@ -9,9 +9,24 @@ import Layout from "../layout/Layout";
 import {ToastContainer} from "react-toastify";
 import NotFound from "../../features/errors/NotFound";
 import LoginForm from "../../features/users/LoginForm";
+import useStore from "../stores/store";
+import LoadingComponent from "../layout/LoadingComponent";
 
 function App() {
     const location = useLocation();
+    const {commonStore, userStore} = useStore();
+    useEffect(() => {
+        if(commonStore.token) {
+            userStore.getUser().finally(() => commonStore.setAppLoaded());
+        } else {
+            commonStore.setAppLoaded()
+        }
+    }, [commonStore, userStore]);
+
+    if (!commonStore.appLoaded) {
+        return <LoadingComponent content={'Loading app...'} />
+    }
+    
   return (
     <div className="App"> 
         <ToastContainer position={'bottom-right'} hideProgressBar />

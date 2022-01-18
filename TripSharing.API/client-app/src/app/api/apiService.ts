@@ -2,6 +2,7 @@ import axios, {AxiosError, AxiosResponse} from "axios";
 import { Trip } from '../models/Trip';
 import {toast} from "react-toastify";
 import {User, UserFormValues} from "../models/User";
+import {store} from "../stores/store";
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -11,6 +12,16 @@ const sleep = (delay: number) => {
     });
 };
 
+axios.interceptors.request.use(config => {
+    const token = store.commonStore.token;
+  
+    if(token) {
+        config!.headers!.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+});
+
 axios.interceptors.response.use(async response => {
     await sleep(1000);
     return response;
@@ -19,7 +30,17 @@ axios.interceptors.response.use(async response => {
     
     switch (status) {
         case 400:
-            toast.error('bad request')
+            if(data.errors) {
+                const modalStateErrors = [];
+                for (const key in data.errors) {
+                    if(data.errors[key]){
+                        modalStateErrors.push(data.errors[key]);
+                    }
+                }
+                throw modalStateErrors.flat();
+            } else {
+                toast.error(data)
+            }
             break;
         case 401:
             toast.error('unauthorized')

@@ -8,7 +8,7 @@ namespace TripSharing.DTO
         public string DisplayName { get; set; }
 
         [Required]
-        [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$", ErrorMessage = "Password must be complex")]
+        [RegularExpression("((^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$)?(^(?=.*\\d)(?=.*[a-z])(?=.*[@#$%^&+=]).*$)?(^(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%^&+=]).*$)?(^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$)?).{8,}", ErrorMessage = "Password must be complex")]
         public string Password { get; set; }
 
         [Required]

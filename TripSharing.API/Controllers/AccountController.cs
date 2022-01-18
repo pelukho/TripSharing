@@ -41,7 +41,7 @@ namespace TripSharing.Controllers
 
             if (result.Succeeded)
             {
-                CreateUserObject(user);
+                return CreateUserObject(user);
             }
 
             return Unauthorized();
@@ -52,12 +52,14 @@ namespace TripSharing.Controllers
         {
             if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                return BadRequest("User already exist");
+                ModelState.AddModelError("email", "User already exist");
+                return ValidationProblem();
             }
             
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.UserName))
             {
-                return BadRequest("Username taken");
+                ModelState.AddModelError("username", "Username taken");
+                return ValidationProblem();
             }
 
             var user = new AppUser
@@ -71,7 +73,7 @@ namespace TripSharing.Controllers
 
             if (result.Succeeded)
             {
-                CreateUserObject(user);
+                return CreateUserObject(user);
             }
 
             return BadRequest("Problem with registration");
