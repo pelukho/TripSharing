@@ -8,6 +8,7 @@ import TripDetails from "../../features/trips/details/TripDetails";
 import Layout from "../layout/Layout";
 import {ToastContainer} from "react-toastify";
 import NotFound from "../../features/errors/NotFound";
+import LoginForm from "../../features/users/LoginForm";
 
 function App() {
     const location = useLocation();
@@ -19,6 +20,7 @@ function App() {
             <Route element={<Layout/>}>
                 <Route path="/trips" element={<TripDashboard/>} />
                 <Route path="/trips/:id" element={<TripDetails/>} />
+                <Route path="/login" element={<LoginForm/>} />
                 {/* @todo */}
                 {/* Fix problem with creating new trip while editing old */}
                 <Route key={location.key} path="/createTrip" element={<TripForm/>} />

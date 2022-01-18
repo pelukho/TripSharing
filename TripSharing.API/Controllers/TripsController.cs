@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +7,7 @@ using TripSharing.Domain;
 
 namespace TripSharing.Controllers
 {
+    [AllowAnonymous]
     public class TripsController : BaseApiController
     {
         [HttpGet]
