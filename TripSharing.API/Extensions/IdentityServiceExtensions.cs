@@ -1,10 +1,12 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TripSharing.Domain;
+using TripSharing.Infrastructure.Security;
 using TripSharing.Repository;
 using TripSharing.Services;
 
@@ -35,6 +37,14 @@ namespace TripSharing.Extensions
                         ValidateAudience = false
                     };
                 });
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsTripDriver", policy =>
+                {
+                    policy.Requirements.Add(new IsDriverRequirement());
+                });
+            });
+            services.AddTransient<IAuthorizationHandler, IsDriverRequirementHandler>();
             services.AddScoped<TokenService>();
             
             return services;

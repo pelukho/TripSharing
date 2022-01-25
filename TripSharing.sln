@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripSharing.API", "TripSharing.API\TripSharing.API.csproj", "{13861790-CB87-44EE-BA72-F00E97D8EC25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripSharing.Application", "TripSharing.Application\TripSharing.Application.csproj", "{1D1DE984-F500-4876-940D-8E13D89EEBA6}"
@@ -7,6 +8,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripSharing.Domain", "TripSharing.Domain\TripSharing.Domain.csproj", "{15E60055-FD8D-493C-B3E8-23173B8B6CD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripSharing.Repository", "TripSharing.Repository\TripSharing.Repository.csproj", "{BC6DB631-332D-41D7-8BE5-43E71F761F63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripSharing.Infrastructure", "TripSharing.Infrastructure\TripSharing.Infrastructure.csproj", "{8763E13B-E730-41C6-B8E1-064ADA4800C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +33,9 @@ Global
 		{BC6DB631-332D-41D7-8BE5-43E71F761F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC6DB631-332D-41D7-8BE5-43E71F761F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC6DB631-332D-41D7-8BE5-43E71F761F63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8763E13B-E730-41C6-B8E1-064ADA4800C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8763E13B-E730-41C6-B8E1-064ADA4800C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8763E13B-E730-41C6-B8E1-064ADA4800C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8763E13B-E730-41C6-B8E1-064ADA4800C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

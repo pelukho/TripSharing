@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TripSharing.Application.Core;
+using TripSharing.Application.Interfaces;
 using TripSharing.Application.Trips;
+using TripSharing.Infrastructure.Security;
 using TripSharing.Repository;
 
 namespace TripSharing.Extensions
@@ -31,6 +33,7 @@ namespace TripSharing.Extensions
             });
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
         }

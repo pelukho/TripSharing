@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace TripSharing.Domain
 {
@@ -7,7 +8,9 @@ namespace TripSharing.Domain
         public Guid Id { get; set; }
 
         public DateTime Date { get; set; }
-
+        
         public bool Status { get; set; }
+        
+        public ICollection<TripAttendee> Attendees { get; set; } = new List<TripAttendee>();
     }
 }

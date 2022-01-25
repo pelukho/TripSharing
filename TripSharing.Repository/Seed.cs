@@ -11,7 +11,7 @@ namespace TripSharing.Repository
     {
         public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
-            if (!userManager.Users.Any())
+            if (!userManager.Users.Any() && !context.Trips.Any())
             {
                 var users = new List<AppUser>
                 {
@@ -39,39 +39,66 @@ namespace TripSharing.Repository
                 {
                     await userManager.CreateAsync(user, "Pa$$word1");
                 }
+                
+                var trips = new List<Trip>
+                {
+                    new Trip
+                    {
+                        Date = DateTime.Now,
+                        Status = true,
+                        Attendees = new List<TripAttendee>
+                        {
+                            new TripAttendee
+                            {
+                                AppUser = users[0],
+                                IsDriver = true
+                            }
+                        }
+                    },
+                    new Trip
+                    {
+                        Date = DateTime.Now.AddMonths(-2),
+                        Status = false,
+                        Attendees = new List<TripAttendee>
+                        {
+                            new TripAttendee
+                            {
+                                AppUser = users[1],
+                                IsDriver = true
+                            }
+                        }
+                    },
+                    new Trip
+                    {
+                        Date = DateTime.Now,
+                        Status = true,
+                        Attendees = new List<TripAttendee>
+                        {
+                            new TripAttendee
+                            {
+                                AppUser = users[2],
+                                IsDriver = true
+                            }
+                        }
+                    },
+                    new Trip
+                    {
+                        Date = DateTime.Now.AddMonths(-1),
+                        Status = true,
+                        Attendees = new List<TripAttendee>
+                        {
+                            new TripAttendee
+                            {
+                                AppUser = users[0],
+                                IsDriver = true
+                            }
+                        }
+                    },
+                };
+                
+                await context.Trips.AddRangeAsync(trips);
+                await context.SaveChangesAsync();
             }
-
-            if (context.Trips.Any())
-            {
-                return;
-            }
-
-            var trips = new List<Trip>
-            {
-                new Trip()
-                {
-                    Date = DateTime.Now,
-                    Status = true,
-                },
-                new Trip()
-                {
-                    Date = DateTime.Now.AddMonths(-2),
-                    Status = false,
-                },
-                new Trip()
-                {
-                    Date = DateTime.Now,
-                    Status = true,
-                },
-                new Trip()
-                {
-                    Date = DateTime.Now.AddMonths(-1),
-                    Status = true,
-                },
-            };
-
-            await context.Trips.AddRangeAsync(trips);
-            await context.SaveChangesAsync();
         }
     }
 }

@@ -7,7 +7,6 @@ using TripSharing.Domain;
 
 namespace TripSharing.Controllers
 {
-    [AllowAnonymous]
     public class TripsController : BaseApiController
     {
         [HttpGet]
@@ -28,6 +27,7 @@ namespace TripSharing.Controllers
             return HandleResult(await Mediator.Send(new Create.Command {Trip = trip}));
         }
 
+        [Authorize(Policy = "IsTripDriver")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditTrip(Guid id, Trip trip)
         {
@@ -35,10 +35,17 @@ namespace TripSharing.Controllers
             return HandleResult(await Mediator.Send(new Edit.Command {Trip = trip}));
         }
 
+        [Authorize(Policy = "IsTripDriver")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrip(Guid id)
         {
             return HandleResult(await Mediator.Send(new Delete.Command {Id = id}));
+        }
+        
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> Attend(Guid id)
+        {
+            return HandleResult(await Mediator.Send(new UpdateAttendance.Command {Id = id}));
         }
     }
 }

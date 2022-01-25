@@ -34,6 +34,7 @@
     <ItemGroup>
       <ProjectReference Include="..\TripSharing.Application\TripSharing.Application.csproj" />
       <ProjectReference Include="..\TripSharing.Repository\TripSharing.Repository.csproj" />
+      <ProjectReference Include="..\TripSharing.Infrastructure\TripSharing.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

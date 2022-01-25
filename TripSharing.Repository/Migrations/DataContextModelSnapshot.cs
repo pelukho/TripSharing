@@ -232,6 +232,24 @@ namespace TripSharing.Repository.Migrations
                     b.ToTable("Trips");
                 });
 
+            modelBuilder.Entity("TripSharing.Domain.TripAttendee", b =>
+                {
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<byte[]>("TripId")
+                        .HasColumnType("varbinary(16)");
+
+                    b.Property<bool>("IsDriver")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("AppUserId", "TripId");
+
+                    b.HasIndex("TripId");
+
+                    b.ToTable("TripAttendees");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -281,6 +299,35 @@ namespace TripSharing.Repository.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TripSharing.Domain.TripAttendee", b =>
+                {
+                    b.HasOne("TripSharing.Domain.AppUser", "AppUser")
+                        .WithMany("Trips")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TripSharing.Domain.Trip", "Trip")
+                        .WithMany("Attendees")
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Trip");
+                });
+
+            modelBuilder.Entity("TripSharing.Domain.AppUser", b =>
+                {
+                    b.Navigation("Trips");
+                });
+
+            modelBuilder.Entity("TripSharing.Domain.Trip", b =>
+                {
+                    b.Navigation("Attendees");
                 });
 #pragma warning restore 612, 618
         }
