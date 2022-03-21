@@ -7,19 +7,14 @@ import {v4 as uuid} from 'uuid';
 import {Formik, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup';
 import DatePicker from "../../../app/common/form/DatePicker";
-import {Trip} from "../../../app/models/Trip";
+import {Trip, TripFormValues} from "../../../app/models/Trip";
 
 export default observer(function TripForm() {
     
     const {tripStore} = useStore(),
         navigate = useNavigate(),
         {id} = useParams<{id: string}>(),
-        [trip, setTrip] = useState<Trip>
-        ({
-             id: '',
-             date: null,
-             status: false,
-        });
+        [trip, setTrip] = useState<TripFormValues>(new TripFormValues());
     
     const validationSchema = Yup.object({
         date: Yup.date().required('The date is required!').nullable()
@@ -27,12 +22,12 @@ export default observer(function TripForm() {
     
     useEffect(() => {
         if(id) {
-            tripStore.loadTrip(id).then(trip => setTrip(trip!));
+            tripStore.loadTrip(id).then(trip => setTrip(new TripFormValues(trip)));
         }
     }, [id, tripStore]);
     
-    function handleFormSubmit(trip: Trip){
-        if(trip.id.length === 0) {
+    function handleFormSubmit(trip: TripFormValues){
+        if(!trip.id) {
             let newTrip = {
                 ...trip,
                 id: uuid()
@@ -65,7 +60,7 @@ export default observer(function TripForm() {
                         </FormField>
                         <Button 
                             disabled={isSubmitting || !dirty || !isValid}
-                            loading={tripStore.submitting} 
+                            loading={isSubmitting} 
                             floated='right' 
                             positive 
                             type='submit' 

@@ -1,8 +1,14 @@
 import React from "react";
 import {Image, Item, Label, List, Segment} from "semantic-ui-react";
 import {Link} from "react-router-dom";
+import {Trip} from "../../../app/models/Trip";
+import {observer} from "mobx-react-lite";
 
-export default function TripDetailedSidebar() {
+interface Props {
+    trip: Trip
+}
+
+export default observer(function TripDetailedSidebar({trip: {attendees, driverName}}: Props) {
     return (
         <>
             <Segment
@@ -13,50 +19,32 @@ export default function TripDetailedSidebar() {
                 inverted
                 color='teal'
             >
-                3 People Going
+                {attendees?.length} {attendees?.length === 1 ? 'Person' : 'People'} Going
             </Segment>
             <Segment attached>
                 <List relaxed divided>
-                    <Item style={{position: 'relative'}}>
-                        <Label 
-                            style={{position: 'absolute'}}
-                            color='orange'
-                            ribbon='right'
-                        >Host</Label>
-                        <Image size='tiny' src='https://react.semantic-ui.com/images/avatar/small/christian.jpg' />
-                        <Item.Content verticalAlign={'middle'}>
-                            <Item.Header as={'h3'}>
-                                <Link to={'#'}>
-                                    Rob
-                                </Link>
-                            </Item.Header>
-                            <Item.Extra style={{color: 'orange'}}>Following</Item.Extra>
-                        </Item.Content>
-                    </Item>
-                    <Item style={{position: 'relative'}}>
-                        <Image size='tiny' src='https://react.semantic-ui.com/images/avatar/small/christian.jpg' />
-                        <Item.Content verticalAlign={'middle'}>
-                            <Item.Header as={'h3'}>
-                                <Link to={'#'}>
-                                    Rob
-                                </Link>
-                            </Item.Header>
-                            <Item.Extra style={{color: 'orange'}}>Following</Item.Extra>
-                        </Item.Content>
-                    </Item>
-                    <Item style={{position: 'relative'}}>
-                        <Image size='tiny' src='https://react.semantic-ui.com/images/avatar/small/christian.jpg' />
-                        <Item.Content verticalAlign={'middle'}>
-                            <Item.Header as={'h3'}>
-                                <Link to={'#'}>
-                                    Rob
-                                </Link>
-                            </Item.Header>
-                            <Item.Extra style={{color: 'orange'}}>Following</Item.Extra>
-                        </Item.Content>
-                    </Item>
+                    {attendees?.map(attendee => (
+                        <Item key={attendee.username} style={{position: 'relative'}}>
+                            {attendee.username === driverName && (
+                                <Label
+                                    style={{position: 'absolute'}}
+                                    color='orange'
+                                    ribbon='right'
+                                >Host</Label>
+                            )}
+                            <Image size='tiny'
+                                   src={attendee.image || 'https://react.semantic-ui.com/images/avatar/small/christian.jpg'}/>
+                            <Item.Content verticalAlign={'middle'}>
+                                <Item.Header as={'h3'}>
+                                    <Link to={`/profiles/${attendee.username}`}>
+                                        {attendee.displayName}
+                                    </Link>
+                                </Item.Header>
+                            </Item.Content>
+                        </Item>
+                    ))}
                 </List>
             </Segment>
         </>
     );
-}
+});

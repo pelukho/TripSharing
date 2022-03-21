@@ -7,6 +7,7 @@ import {format} from "date-fns";
 interface Props {
     trip: Trip
 }
+
 export default observer(function TripDetailedInfo({trip} : Props) {
     return(
         <Segment.Group>

@@ -1,7 +1,7 @@
 import React from "react";
 import {ErrorMessage, Form, Formik} from "formik";
 import TextInput from "../../app/common/form/TextInput";
-import {Button, Label} from "semantic-ui-react";
+import {Button} from "semantic-ui-react";
 import useStore from "../../app/stores/store";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";

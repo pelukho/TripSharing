@@ -32,7 +32,7 @@ export default observer(function TripDetails() {
                 <TripDetailedChat />
             </Grid.Column>
             <Grid.Column width={6}>
-                <TripDetailedSidebar />
+                <TripDetailedSidebar trip={selectedTrip!} />
             </Grid.Column>
         </Grid>
     );
