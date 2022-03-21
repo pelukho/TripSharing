@@ -12,4 +12,8 @@
       <ProjectReference Include="..\TripSharing.Domain\TripSharing.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations" />
+    </ItemGroup>
+
 </Project>
