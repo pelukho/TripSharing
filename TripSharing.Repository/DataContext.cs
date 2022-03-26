@@ -14,6 +14,7 @@ namespace TripSharing.Repository
         public DbSet<Trip> Trips { get; set; }
 
         public DbSet<TripAttendee> TripAttendees { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -34,7 +35,9 @@ namespace TripSharing.Repository
             builder.Entity<AppUser>(entity => entity.Property(m => m.NormalizedEmail).HasMaxLength(200));
             builder.Entity<AppUser>(entity => entity.Property(m => m.Id).HasMaxLength(200));
             builder.Entity<AppUser>(entity => entity.Property(m => m.NormalizedUserName).HasMaxLength(200));
-
+            
+            builder.Entity<Photo>(entity => entity.Property(m => m.Id).HasMaxLength(200));
+            
             builder.Entity<IdentityRole>(entity => entity.Property(m => m.NormalizedName).HasMaxLength(200));
             builder.Entity<IdentityRole>(entity => entity.Property(m => m.Id).HasMaxLength(200));
 

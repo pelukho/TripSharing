@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using TripSharing.Domain;
-
-namespace TripSharing.Application.Profiles
+namespace TripSharing.Application.Trips
 {
-    public class Profile
+    public class AttendeeDto
     {
         public string Username { get; set; }
         
@@ -12,7 +9,5 @@ namespace TripSharing.Application.Profiles
         public string Bio { get; set; }
         
         public string Image { get; set; }
-
-        public ICollection<Photo> Photos { get; set; }
     }
 }

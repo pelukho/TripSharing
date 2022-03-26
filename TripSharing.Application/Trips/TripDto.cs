@@ -14,6 +14,6 @@ namespace TripSharing.Application.Trips
 
         public string DriverName { get; set; }
 
-        public ICollection<Profile> Attendees { get; set; }
+        public ICollection<AttendeeDto> Attendees { get; set; }
     }
 }

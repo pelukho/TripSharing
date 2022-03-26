@@ -10,5 +10,7 @@ namespace TripSharing.Domain
         public string Bio { get; set; }
 
         public ICollection<TripAttendee> Trips { get; set; }
+
+        public ICollection<Photo> Photos { get; set; }
     }
 }
