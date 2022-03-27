@@ -7,7 +7,7 @@ import {v4 as uuid} from 'uuid';
 import {Formik, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup';
 import DatePicker from "../../../app/common/form/DatePicker";
-import {Trip, TripFormValues} from "../../../app/models/Trip";
+import {TripFormValues} from "../../../app/models/Trip";
 
 export default observer(function TripForm() {
     

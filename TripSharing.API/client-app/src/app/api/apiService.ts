@@ -3,6 +3,7 @@ import {Trip, TripFormValues} from '../models/Trip';
 import {toast} from "react-toastify";
 import {User, UserFormValues} from "../models/User";
 import {store} from "../stores/store";
+import {Photo, Profile} from "../models/Profile";
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -74,9 +75,23 @@ const responseBody = <T> (response: AxiosResponse<T>) => response.data,
         login: (user: UserFormValues) => requests.post<User>('/account/login', user),
         register: (user: UserFormValues) => requests.post<User>('/account/register', user)
     },
+    Profiles = {
+        get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+        uploadPhoto: (file: Blob) => {
+            let formData = new FormData();
+            formData.append('File', file);
+            
+            return axios.post<Photo>('/photos', formData, {
+                headers: {'Content-type': 'multipart/form-data'}
+            });
+        },
+        setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
+        deletePhoto: (id: string) => requests.delete(`/photos/${id}`)
+    },
     apiService = {
         Trips,
-        Account
+        Account,
+        Profiles
     };
 
 export default apiService;

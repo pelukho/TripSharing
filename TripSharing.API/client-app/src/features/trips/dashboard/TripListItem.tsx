@@ -30,13 +30,13 @@ export default function TripListItem({trip} : Props) {
                 )}
                 <Item.Group>
                     <Item>
-                        <Item.Image size='tiny' circular src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
+                        <Item.Image size='tiny' circular src={trip.driver?.image || 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} />
                     </Item>
                     <Item.Content>
                         <Item.Header as={Link} to={`/trips/${trip.id}`}>{trip.id}</Item.Header>
                         <Item.Meta>{format(trip.date!, 'dd MMMM yyyy HH:mm')}</Item.Meta>
                         <Item.Description>
-                            <div>Created by {trip.driver?.displayName}</div>
+                            <div>Created by <Link to={`/profiles/${trip.driver?.username}`}>{trip.driver?.displayName}</Link></div>
                         </Item.Description>
                         {trip.isDriver && (
                             <Item.Description>

@@ -87,6 +87,11 @@ namespace TripSharing.Controllers
         {
             var user = await _userManager.Users.Include(p => p.Photos)
                 .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+            
+            if (user == null)
+            {
+                return null;
+            }
 
             return CreateUserObject(user);
         }

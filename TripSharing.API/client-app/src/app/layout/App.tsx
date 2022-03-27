@@ -11,6 +11,7 @@ import NotFound from "../../features/errors/NotFound";
 import LoginForm from "../../features/users/LoginForm";
 import useStore from "../stores/store";
 import LoadingComponent from "../layout/LoadingComponent";
+import ProfilePage from "../../features/profiles/ProfilePage";
 
 function App() {
     const location = useLocation();
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/trips" element={<TripDashboard/>} />
                 <Route path="/trips/:id" element={<TripDetails/>} />
                 <Route path="/login" element={<LoginForm/>} />
+                <Route path="/profiles/:username" element={<ProfilePage/>} />
                 {/* @todo */}
                 {/* Fix problem with creating new trip while editing old */}
                 <Route key={location.key} path="/createTrip" element={<TripForm/>} />

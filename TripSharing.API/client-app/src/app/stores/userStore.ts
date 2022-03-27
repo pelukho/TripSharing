@@ -48,4 +48,10 @@ export default class UserStore {
             throw e;
         }
     };
+    
+    setImage = (image: string) => {
+        if(this.user) {
+            this.user.image = image;
+        }
+    }
 }
