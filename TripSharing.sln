@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# 
+#
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripSharing.API", "TripSharing.API\TripSharing.API.csproj", "{13861790-CB87-44EE-BA72-F00E97D8EC25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripSharing.Application", "TripSharing.Application\TripSharing.Application.csproj", "{1D1DE984-F500-4876-940D-8E13D89EEBA6}"
