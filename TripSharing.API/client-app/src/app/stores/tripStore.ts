@@ -186,4 +186,8 @@ export default class TripStore {
             runInAction(() => this.loading = false);
         }
     };
+    
+    clearSelectedTrip = () => {
+        this.selectedTrip = undefined;
+    };
 }

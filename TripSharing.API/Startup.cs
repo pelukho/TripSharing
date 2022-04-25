@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using TripSharing.Application.Trips;
 using TripSharing.Extensions;
 using TripSharing.Middleware;
+using TripSharing.SignalR;
 
 namespace TripSharing
 {
@@ -75,6 +76,7 @@ namespace TripSharing
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapHub<CommentHub>("/comment");
             });
 
             app.UseSpa(spa =>

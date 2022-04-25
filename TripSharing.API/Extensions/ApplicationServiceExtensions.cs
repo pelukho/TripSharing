@@ -29,6 +29,7 @@ namespace TripSharing.Extensions
                     policy
                         .AllowAnyMethod()
                         .AllowAnyHeader()
+                        .AllowCredentials()
                         .WithOrigins(config.GetValue<string>("Origins"));
                 });
             });
@@ -37,6 +38,7 @@ namespace TripSharing.Extensions
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
+            services.AddSignalR();
 
             return services;
         }

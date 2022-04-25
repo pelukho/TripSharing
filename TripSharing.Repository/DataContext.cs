@@ -15,6 +15,7 @@ namespace TripSharing.Repository
 
         public DbSet<TripAttendee> TripAttendees { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,6 +32,11 @@ namespace TripSharing.Repository
                 .HasOne(u => u.Trip)
                 .WithMany(t => t.Attendees)
                 .HasForeignKey(aa => aa.TripId);
+
+            builder.Entity<Comment>()
+                .HasOne(a => a.Trip)
+                .WithMany(c => c.Comments)
+                .OnDelete(DeleteBehavior.Cascade);
             
             builder.Entity<AppUser>(entity => entity.Property(m => m.NormalizedEmail).HasMaxLength(200));
             builder.Entity<AppUser>(entity => entity.Property(m => m.Id).HasMaxLength(200));

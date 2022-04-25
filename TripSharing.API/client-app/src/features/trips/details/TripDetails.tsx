@@ -11,17 +11,19 @@ import TripDetailedSidebar from "./TripDetailedSidebar";
 
 export default observer(function TripDetails() {
     const {tripStore} = useStore(),
-        {loadTrip, loadingInitial, selectedTrip} = tripStore,
+        {loadTrip, loadingInitial, selectedTrip, clearSelectedTrip} = tripStore,
         {id} = useParams<{ id: string }>();
 
     useEffect(() => {
         if (id) {
             loadTrip(id);
         }
-    }, [id, loadTrip]);
+        
+        return () => clearSelectedTrip();
+    }, [id, loadTrip, clearSelectedTrip]);
 
     if (loadingInitial || !selectedTrip) {
-        return <LoadingComponent/>;
+        return <LoadingComponent/>
     }
 
     return (
@@ -29,7 +31,7 @@ export default observer(function TripDetails() {
             <Grid.Column width={10}>
                 <TripDetailedHeader trip={selectedTrip} />
                 <TripDetailedInfo trip={selectedTrip} />
-                <TripDetailedChat />
+                <TripDetailedChat tripId={selectedTrip.id} />
             </Grid.Column>
             <Grid.Column width={6}>
                 <TripDetailedSidebar trip={selectedTrip!} />

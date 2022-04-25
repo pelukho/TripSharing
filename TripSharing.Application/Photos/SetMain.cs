@@ -55,7 +55,9 @@ namespace TripSharing.Application.Photos
 
                 var success = await _context.SaveChangesAsync() > 0;
 
-                return success ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem with setting main photo");
+                return success 
+                    ? Result<Unit>.Success(Unit.Value) 
+                    : Result<Unit>.Failure("Problem with setting main photo");
             }
         }
     }

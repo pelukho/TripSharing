@@ -63,7 +63,9 @@ namespace TripSharing.Application.Photos
 
                 var success = await _context.SaveChangesAsync() > 0;
 
-                return success ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Failed delete image");
+                return success 
+                    ? Result<Unit>.Success(Unit.Value) 
+                    : Result<Unit>.Failure("Failed delete image");
             }
         }
     }

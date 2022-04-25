@@ -12,5 +12,7 @@ namespace TripSharing.Domain
         public bool Status { get; set; }
         
         public ICollection<TripAttendee> Attendees { get; set; } = new List<TripAttendee>();
+        
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

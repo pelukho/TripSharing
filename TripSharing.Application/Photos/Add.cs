@@ -58,7 +58,9 @@ namespace TripSharing.Application.Photos
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                return result ? Result<Photo>.Success(photo) : Result<Photo>.Failure("Problem adding photo");
+                return result 
+                    ? Result<Photo>.Success(photo) 
+                    : Result<Photo>.Failure("Problem adding photo");
             }
         }
     }
