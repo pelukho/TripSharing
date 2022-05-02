@@ -6,7 +6,6 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TripSharing.Application.Core;
-using TripSharing.Domain;
 using TripSharing.Repository;
 
 namespace TripSharing.Application.Trips

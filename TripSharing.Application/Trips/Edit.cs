@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Org.BouncyCastle.Asn1.Ocsp;
 using TripSharing.Application.Core;
 using TripSharing.Domain;
 using TripSharing.Repository;
