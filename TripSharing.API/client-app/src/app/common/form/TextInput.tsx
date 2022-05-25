@@ -13,13 +13,15 @@ export default function TextInput(props: Props) {
     const [field, meta] = useField(props.name);
     return(
         <Form.Field error={meta.touched && !!meta.error}>
-            <label>
-                {props.label}
-            </label>
-            <input {...field} {...props} />
-            {meta.touched && meta.error ? (
-                <Label basic color={'red'}>{meta.error}</Label>
-            ) : null}
+            <div className="form-floating">
+                <label>
+                    {props.label}
+                </label>
+                <input {...field} {...props} className={'form-control'} />
+                {meta.touched && meta.error ? (
+                    <Label basic color={'red'}>{meta.error}</Label>
+                ) : null}
+            </div>
         </Form.Field>
     );
 }

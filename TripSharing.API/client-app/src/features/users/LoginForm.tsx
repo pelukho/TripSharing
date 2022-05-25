@@ -30,7 +30,7 @@ export default observer(function LoginForm() {
                             content={errors.error} 
                         />} 
                         />
-                    <Button loading={isSubmitting} positive content={'Login'} type={'submit'} fluid />
+                    <Button loading={isSubmitting} positive content={'Login'} className={'pt-4 pb-4'} type={'submit'} fluid />
                 </Form>
             )}
         </Formik>

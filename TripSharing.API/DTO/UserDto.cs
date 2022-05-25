@@ -7,6 +7,10 @@ namespace TripSharing.DTO
         public string Token { get; set; }
 
         public string UserName { get; set; }
+        
+        public string Phone { get; set; }
+        
+        public bool HasCar { get; set; }
 
         public string Image { get; set; }
     }

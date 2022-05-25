@@ -11,6 +11,12 @@ namespace TripSharing.Application.Trips
         public DateTime Date { get; set; }
         
         public bool Status { get; set; }
+        
+        public string From { get; set; }
+        
+        public string To { get; set; }
+        
+        public int Places { get; set; }
 
         public string DriverName { get; set; }
 

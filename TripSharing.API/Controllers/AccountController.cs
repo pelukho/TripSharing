@@ -103,6 +103,8 @@ namespace TripSharing.Controllers
                 DisplayName = user.DisplayName,
                 Image = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url,
                 Token = _tokenService.CreateToken(user),
+                Phone = user.Phone,
+                HasCar = user.HasCar,
                 UserName = user.UserName
             };
         }

@@ -12,8 +12,8 @@ export default observer(function TripListItemAttendee({attendees} : Props) {
     return(
         <List horizontal>
             {attendees.map(attendee => (
-                <List.Item key={attendee.username} as={Link} to={`/profile/${attendee.username}`}>
-                    <Image style={{height: '35px'}} size={'mini'} circular src={attendee.image || '//react.semantic-ui.com/images/avatar/small/joe.jpg'} />
+                <List.Item key={attendee.username} as={Link} to={`/profiles/${attendee.username}`}>
+                    <Image style={{height: '35px'}} size={'mini'} circular src={attendee.image || '/assets/images/person.png'} />
                 </List.Item>
             ))}
         </List>

@@ -1,7 +1,7 @@
 import React from "react";
 import {ErrorMessage, Form, Formik} from "formik";
 import TextInput from "../../app/common/form/TextInput";
-import {Button} from "semantic-ui-react";
+import {Button, Checkbox} from "semantic-ui-react";
 import useStore from "../../app/stores/store";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
@@ -17,7 +17,9 @@ export default function RegisterForm() {
                 displayName: '',
                 username: '',
                 email: '', 
+                phone: '', 
                 password: '', 
+                hasCar: false, 
                 error: null
         }}
             onSubmit={(values, {setErrors}) => userStore
@@ -28,15 +30,21 @@ export default function RegisterForm() {
                 displayName: Yup.string().required(),
                 username: Yup.string().required(),
                 email: Yup.string().email().required(),
+                phone: Yup.string().required(),
                 password: Yup.string().required(),
             })}
         >
             {({handleSubmit, isSubmitting, errors, isValid, dirty}) => (
-                <Form className={'ui form error'} onSubmit={handleSubmit} autoComplete={'off'}>
+                <Form className={'ui form error user-access-form'} onSubmit={handleSubmit} autoComplete={'off'}>
                     <TextInput placeholder={'User Name'} name={'username'} type={'text'} />
                     <TextInput placeholder={'Display Name'} name={'displayName'} type={'text'} />
+                    <TextInput placeholder={'Phone'} name={'phone'} type={'tel'} />
                     <TextInput placeholder={'Email'} name={'email'} type={'email'} />
                     <TextInput placeholder={'Password'} name={'password'} type={'password'} />
+                    <Checkbox toggle type={'checkbox'} name={'hasCar'} label={'Has car'} style={{
+                        marginBottom: '20px',
+                        color: 'grey'
+                    }}/>
                     <ErrorMessage name={'error'} render={() =>
                         <ValidationErrors errors={errors.error}/>}
                     />
@@ -45,7 +53,9 @@ export default function RegisterForm() {
                         loading={isSubmitting} 
                         positive 
                         content={'Register'} 
-                        type={'submit'} fluid 
+                        type={'submit'} 
+                        fluid 
+                        className={'w-100 btn btn-lg btn-primary pt-4 pb-4'}
                     />
                 </Form>
             )}

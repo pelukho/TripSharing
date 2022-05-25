@@ -19,7 +19,8 @@ namespace TripSharing.Repository
                     {
                         DisplayName = "Sergey",
                         UserName = "Sergey",
-                        Email = "sergey@test.com"
+                        Email = "sergey@test.com",
+                        HasCar = true
                     },
                     new AppUser
                     {

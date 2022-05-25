@@ -5,6 +5,7 @@ import useStore from "../../app/stores/store";
 import {observer} from "mobx-react-lite";
 import LoginForm from "../users/LoginForm";
 import RegisterForm from "../users/RegisterForm";
+import {default as MainHeader} from "../../app/layout/Header";
 
 export default observer(function HomePage(){
     const {userStore} = useStore();
@@ -30,15 +31,22 @@ export default observer(function HomePage(){
     ]
     
     return(
-        <Container style={{marginTop: '2em'}}>
-            <h1>Hello from home page, here you can go to</h1>
-            {userStore.isLoggedIn ? (
-                <>
-                    <NavLink to='/trips'>Trips Page</NavLink>
-                </>
-            ) : (
-                <Tab panes={panes} menu={{ secondary: true, pointing: true }} />
-            )}
-        </Container>
+        <>
+            <MainHeader />
+            <Container style={{paddingTop: '9em'}} className={'account-access sign-up'}>
+                {userStore.isLoggedIn ? (
+                    <>
+                        <NavLink to='/trips'>Trips Page</NavLink>
+                    </>
+                ) : (
+                    <>
+                        <div className="row">
+                            <div className="col-lg-6 offset-lg-3">
+                                <Tab panes={panes} menu={{ secondary: true, pointing: true }} />
+                            </div>
+                        </div></>
+                )}
+            </Container>
+        </>
     );
 })

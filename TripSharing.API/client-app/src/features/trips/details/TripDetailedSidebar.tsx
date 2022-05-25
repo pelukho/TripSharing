@@ -33,7 +33,7 @@ export default observer(function TripDetailedSidebar({trip: {attendees, driverNa
                                 >Host</Label>
                             )}
                             <Image size='tiny'
-                                   src={attendee.image || 'https://react.semantic-ui.com/images/avatar/small/christian.jpg'}/>
+                                   src={attendee.image || '/assets/images/person.png'}/>
                             <Item.Content verticalAlign={'middle'}>
                                 <Item.Header as={'h3'}>
                                     <Link to={`/profiles/${attendee.username}`}>

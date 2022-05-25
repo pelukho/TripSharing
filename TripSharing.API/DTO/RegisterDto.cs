@@ -17,5 +17,8 @@ namespace TripSharing.DTO
 
         [Required]
         public string UserName { get; set; }
+        
+        [Required]
+        public string Phone { get; set; }
     }
 }

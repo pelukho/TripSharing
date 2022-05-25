@@ -36,14 +36,13 @@ export default observer(function TripDetailedHeader({trip} : Props) {
                            content={'Cancelled'}
                     />
                 )}
-                <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' fluid style={TripImageStyle} />
+                <Image src={trip.driver?.image || '/assets/images/person.png'} fluid style={TripImageStyle} />
                 <Segment basic style={TripTextStyle}>
                     <Item.Group>
                         <Item>
                             <Item.Content>
-                                <Header size='huge' content={trip.id} style={{color: 'white'}} />
-                                <p>{format(trip.date!, 'dd MMMM yyyy HH:mm')}</p>
-                                <p>Created by <strong>{trip.driverName}</strong></p>
+                                <p style={{color: '#fff'}}>{format(trip.date!, 'dd MMMM yyyy HH:mm')}</p>
+                                <p style={{color: '#fff'}}>Created by <Link to={`/profiles/${trip.driver?.username}`}>{trip.driverName}</Link></p>
                             </Item.Content>
                         </Item>
                     </Item.Group>

@@ -30,46 +30,44 @@ export default function TripListItem({trip} : Props) {
                 )}
                 <Item.Group>
                     <Item>
-                        <Item.Image size='tiny' circular src={trip.driver?.image || 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} />
+                        <Item.Image size='tiny' circular src={trip.driver?.image || '/assets/images/person.png'} />
                     </Item>
                     <Item.Content>
-                        <Item.Header as={Link} to={`/trips/${trip.id}`}>{trip.id}</Item.Header>
-                        <Item.Meta>{format(trip.date!, 'dd MMMM yyyy HH:mm')}</Item.Meta>
                         <Item.Description>
                             <div>Created by <Link to={`/profiles/${trip.driver?.username}`}>{trip.driver?.displayName}</Link></div>
                         </Item.Description>
                         {trip.isDriver && (
-                            <Item.Description>
+                            <Item.Description className={'mt-2'}>
                                 <Label basic color={'orange'}>
                                     You are driver of this trip
                                 </Label>
                             </Item.Description>
                         )}
                         {trip.isGoing && !trip.isDriver && (
-                            <Item.Description>
+                            <Item.Description className={'mt-2'}>
                                 <Label basic color={'green'}>
                                     You are going to this trip
                                 </Label>
                             </Item.Description>
                         )}
-                        <Item.Extra>
+                        <Item.Extra className={'mt-2'} style={{textAlign: 'right'}}>
                             <Button
                                 as={Link}
                                 to={`/trips/${trip.id}`}
-                                floated='right'
                                 content='View Trip'
                                 color='blue'
                             />
-                            <Label basic content={trip.status ? 'Done' : 'Not done'}/>
                         </Item.Extra>
                     </Item.Content>
                 </Item.Group>
             </Segment>
             <Segment>
-                <span>
+                <p>
                     <Icon name={'clock'} /> {format(trip.date!, 'dd MMM yyyy h:mm aa')}
-                    <Icon name={'marker'} /> {trip.id}
-                </span>
+                </p>
+                <p>
+                    <Icon name={'marker'} /> {trip.from} - {trip.to}
+                </p>
             </Segment>
             <Segment secondary>
                 <TripListItemAttendee attendees={trip.attendees!} />

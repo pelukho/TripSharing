@@ -8,6 +8,7 @@ import {Formik, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup';
 import DatePicker from "../../../app/common/form/DatePicker";
 import {TripFormValues} from "../../../app/models/Trip";
+import TextInput from "../../../app/common/form/TextInput";
 
 export default observer(function TripForm() {
     
@@ -17,10 +18,14 @@ export default observer(function TripForm() {
         [trip, setTrip] = useState<TripFormValues>(new TripFormValues());
     
     const validationSchema = Yup.object({
-        date: Yup.date().required('The date is required!').nullable()
+        date: Yup.date().required('The date is required!').nullable(),
+        from: Yup.string().required('The from place is required!'),
+        to: Yup.string().required('The to place is required!'),
+        places: Yup.number().required('The places is required!')
     });
     
     useEffect(() => {
+        console.log(id);
         if(id) {
             tripStore.loadTrip(id).then(trip => setTrip(new TripFormValues(trip)));
         }
@@ -48,7 +53,10 @@ export default observer(function TripForm() {
                 {({handleSubmit, isValid, isSubmitting, dirty}) => (
                     <Form className={'ui form'} onSubmit={handleSubmit} autoComplete='off'>
                         <FormField>
-                            <DatePicker 
+                            <TextInput placeholder={'From'} name={'from'} />
+                            <TextInput placeholder={'To'} name={'to'} />
+                            <TextInput placeholder={'Places'} name={'places'} />
+                            <DatePicker
                                 placeholderText={'Date'}
                                 name='date'
                                 showTimeSelect
@@ -66,7 +74,7 @@ export default observer(function TripForm() {
                             type='submit' 
                             content='Submit' 
                         />
-                        <Button as={Link} to={`/trips/${trip.id}`} floated='right' type='button' content='Cancel' />
+                        <Button as={Link} to={`/trips/${trip.id || ''}`} floated='right' type='button' content='Cancel' />
                     </Form>
                 )}
             </Formik>

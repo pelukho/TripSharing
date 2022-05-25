@@ -8,6 +8,10 @@ namespace TripSharing.Domain
         public string DisplayName { get; set; }
 
         public string Bio { get; set; }
+        
+        public string Phone { get; set; }
+        
+        public bool HasCar { get; set; }
 
         public ICollection<TripAttendee> Trips { get; set; }
 
